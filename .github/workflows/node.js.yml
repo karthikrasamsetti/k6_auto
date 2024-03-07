@@ -30,3 +30,7 @@ jobs:
           name: htmlreports
           path: summary.html
           compression-level: 0 
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
+      
