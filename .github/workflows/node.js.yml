@@ -28,7 +28,9 @@ jobs:
         run: echo "GITHUB_TOKEN=${{ secrets.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 }}" >> $GITHUB_ENV
 
       - name: Run k6 local test
-        run: npx k6 run tests/performancetest.js
+        uses: grafana/k6-action@v0.3.1
+        with:
+            filename: tests/performancetest.js
 
       - name: Upload Artifacts
         if: always()
