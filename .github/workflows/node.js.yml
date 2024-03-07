@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           name: github-pages
-          path: reports/*
+          path: reports/summary.html
 
   # Deployment job
   deploy:
