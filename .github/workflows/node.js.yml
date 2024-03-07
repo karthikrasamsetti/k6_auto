@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 20.11.0
       - run: npm ci
+      - name: Use Personal Access Token
+        run: echo "GITHUB_TOKEN=${{ secrets.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 }}" >> $GITHUB_ENV
       - name: Run k6 local test
         uses: grafana/k6-action@v0.3.1
         with:
