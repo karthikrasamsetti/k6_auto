@@ -61,7 +61,7 @@ jobs:
       
           git add -A
           git commit -m "Deploy changes"
-          git push https://USERNAME:GIT_TOKEN@github.com/OWNER/REPO.git gh-pages
+          git push https://github.com/${{ github.repository }}.git gh-pages
 
 
     # Copy the artifacts into the gh-pages branch
