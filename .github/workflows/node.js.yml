@@ -41,17 +41,15 @@ jobs:
           filename: tests/performancetest.js
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
-      - name: github-pages
+      - name: upload artifact
         if: always()
         uses: actions/upload-pages-artifact@v2
         with:
           name: github-pages
-          path: reports
+          path: './reports/'
 
   # Deployment job
   deploy:
