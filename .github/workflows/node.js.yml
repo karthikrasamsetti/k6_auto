@@ -1,38 +1,50 @@
 name: WebDriverIO CI
-'on':
+
+on:
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: git chechout
+      - name: Git Checkout
         uses: actions/checkout@v4
-      - name: SetUp NodeJs -20
+
+      - name: Set Up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
-      - run: npm ci
-      - name: Use Personal Access Token
+          node-version: 20.11.0  # Use a supported Node.js version
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Set up Environment Variables
         run: echo "GITHUB_TOKEN=${{ secrets.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 }}" >> $GITHUB_ENV
+
       - name: Run k6 local test
-        uses: grafana/k6-action@v0.3.1
-        with:
-            filename: tests/performancetest.js
-        
-      
-      - name: upload artifacts
+        run: npx k6 run tests/performancetest.js
+
+      - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: htmlreports
+          name: html-reports
           path: summary.html
-          compression-level: 0 
+          compression-level: 0
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v3
-      
+        if: always()
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git checkout -b gh-pages
+          git add .
+          git commit -m "Deploy changes"
+          git push origin gh-pages
+
