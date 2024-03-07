@@ -37,7 +37,7 @@ jobs:
       - name: Deploy to GitHub Pages
         if: always()
         env:
-          GH_TOKEN: ${{ secrets.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 }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
