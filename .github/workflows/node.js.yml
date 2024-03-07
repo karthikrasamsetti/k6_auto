@@ -34,34 +34,9 @@ jobs:
           name: html-reports
           path: summary.html
           compression-level: 0
-      - name: Deploy to GitHub Pages
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      
-          # Check if gh-pages branch exists
-          if [ -z "$(git show-ref refs/heads/gh-pages)" ]; then
-            git checkout --orphan gh-pages
-          else
-            git checkout gh-pages
-          fi
-          
-          # Clean up existing files
-          git rm -rf .
-      
-          # Download artifacts
-          echo "Downloading artifacts from run $GH_RUN_ID"
-          gh run download -R $GITHUB_REPOSITORY $GH_RUN_ID -p html-reports
-      
-          # Move the summary.html file to the root
-          mv html-reports/summary.html summary.html
-      
-          git add -A
-          git commit -m "Deploy changes"
-          git push https://USERNAME:GIT_TOKEN@github.com/${{ github.repository }}.git gh-pages
+      - name: deploy to Github Pages
+        uses: actions/deploy-pages@v2
+        id: deployment
 
 
     # Copy the artifacts into the gh-pages branch
