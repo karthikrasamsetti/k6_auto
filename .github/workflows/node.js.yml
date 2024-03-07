@@ -36,31 +36,24 @@ jobs:
           compression-level: 0
       - name: Deploy to GitHub Pages
         if: always()
-        run: >
+        env:
+          GH_TOKEN: ${{ secrets.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 }}
+        run: |
           git config --global user.name "${{ github.actor }}"
-
-          git config --global user.email "${{ github.actor
-          }}@users.noreply.github.com"
-
-
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+    
           git checkout gh-pages || git checkout --orphan gh-pages
-
+    
           git rm -rf .
 
-          gh_run_id=$(echo $GITHUB_RUN_ID)
 
-          echo "::set-env name=gh_run_id::${gh_run_id}"
-
-          echo "Downloading artifacts from run $gh_run_id"
-
-          gh run download -R $GITHUB_REPOSITORY $gh_run_id -p html-reports
-
+          echo "Downloading artifacts from run $GH_RUN_ID"
+          gh run download -R $GITHUB_REPOSITORY $GH_RUN_ID -p html-reports
 
           git add -A
-
           git commit -m "Deploy changes"
-
           git push origin gh-pages
+
   
 
     # Copy the artifacts into the gh-pages branch
